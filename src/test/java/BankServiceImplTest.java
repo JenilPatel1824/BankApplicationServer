@@ -4,22 +4,22 @@ import org.junit.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import service.BankService;
+import service.BankServiceImpl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class BankServiceTest
+public class BankServiceImplTest
 {
-    private static final Logger logger = LoggerFactory.getLogger(BankServiceTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(BankServiceImplTest.class);
 
-    private BankService bankService;
+    private BankServiceImpl bankServiceImpl;
 
     @Before
     public void setUp()
     {
-        bankService=new BankService();
+        bankServiceImpl =new BankServiceImpl();
     }
 
     @Test
@@ -31,7 +31,7 @@ public class BankServiceTest
 
         for(int i=0;i<100;i++)
         {
-            Runnable r1 = () -> bankService.deposit(1, 101,100);
+            Runnable r1 = () -> bankServiceImpl.deposit(1, 101,100);
 
             executorService.submit(r1);
         }
@@ -42,7 +42,7 @@ public class BankServiceTest
             logger.error("Thread operations timed out in deposit");
         }
 
-        Assert.assertEquals(10100,bankService.checkBalance(1,101),0);
+        Assert.assertEquals(10100, bankServiceImpl.checkBalance(1,101),0);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class BankServiceTest
 
         for(int i=0;i<99;i++)
         {
-            Runnable r1 = () -> bankService.withdraw(1,101, 1);
+            Runnable r1 = () -> bankServiceImpl.withdraw(1,101, 1);
 
             executorService.submit(r1);
         }
@@ -65,7 +65,6 @@ public class BankServiceTest
         {
             logger.error("Thread operations timed out in withdraw");
         }
-
-        Assert.assertEquals(1,bankService.checkBalance(1,101),0);
+        Assert.assertEquals(1, bankServiceImpl.checkBalance(1,101),0);
     }
 }

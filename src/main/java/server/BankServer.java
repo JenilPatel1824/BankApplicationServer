@@ -2,7 +2,7 @@ package server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import service.BankService;
+import service.BankServiceImpl;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,9 +16,9 @@ public class BankServer
 
     public static void main(String[] args)
     {
-        BankService bankService = new BankService();
+        BankServiceImpl bankServiceImpl = new BankServiceImpl();
 
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(10,10000,60, TimeUnit.SECONDS,new ArrayBlockingQueue<>(100000));
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(10,20,60, TimeUnit.SECONDS,new ArrayBlockingQueue<>(100000));
 
         try (ServerSocket serverSocket = new ServerSocket(PORT))
         {
@@ -30,7 +30,7 @@ public class BankServer
 
                 logger.info("New client connected from " + clientSocket.getRemoteSocketAddress());
 
-                executor.execute(new ClientHandler(clientSocket, bankService));
+                executor.execute(new ClientHandler(clientSocket, bankServiceImpl));
             }
         }
         catch (IOException e)

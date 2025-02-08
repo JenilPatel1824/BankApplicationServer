@@ -1,11 +1,12 @@
 package model;
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 public class Account
 {
     private long accountNumber;
 
-    private AtomicReference<Long> balance;
+    private AtomicLong balance;
 
     private long userId;
 
@@ -15,7 +16,7 @@ public class Account
 
         this.accountNumber=accountNumber;
 
-        this.balance=new AtomicReference<Long>(0L);
+        this.balance=new AtomicLong(0L);
     }
 
     public Account(long accountNumber, long userId, long balance)
@@ -26,12 +27,9 @@ public class Account
 
         if(balance>=0)
         {
-            this.balance = new AtomicReference<>(balance);
+            this.balance = new AtomicLong(balance);
         }
-        else
-        {
-            throw new IllegalArgumentException("Please enter valid initial amount");
-        }
+
     }
 
     public long getAccountNumber()
